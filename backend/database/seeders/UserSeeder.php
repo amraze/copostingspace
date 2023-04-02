@@ -2,26 +2,25 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
+use Illuminate\Database\Seeder;
 use Database\Seeders\Traits\ForeignKeyChecks;
 use Database\Seeders\Traits\TruncateTable;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\User;
 
-class PostSeeder extends Seeder
+class UserSeeder extends Seeder
 {
-    use TruncateTable, ForeignKeyChecks;
+    use ForeignKeyChecks, TruncateTable;
 
     /**
-     * Run the database seeds.
+     * Seed the application's database.
      *
      * @return void
      */
     public function run()
     {
         $this->disableForeignKeyChecks();
-        $this->truncate('posts');
-        Post::factory(3)->create();
+        $this->truncate('users');
+        User::factory(10)->create();
         $this->enableForeignKeyChecks();
     }
 }
