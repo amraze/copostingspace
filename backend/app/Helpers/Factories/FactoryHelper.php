@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\Helpers;
+namespace App\Helpers\Factories;
 
 class FactoryHelper
 {

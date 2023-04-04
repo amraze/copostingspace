@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Post;
 use App\Models\User;
-use Database\Factories\Helpers\FactoryHelper;
-use Database\Seeders\Traits\ForeignKeyChecks;
-use Database\Seeders\Traits\TruncateTable;
+use App\Helpers\Factories\FactoryHelper;
+use App\Traits\Database\Seeders\ForeignKeyChecks;
+use App\Traits\Database\Seeders\TruncateTable;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder

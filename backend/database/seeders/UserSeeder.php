@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Database\Seeders\Traits\ForeignKeyChecks;
-use Database\Seeders\Traits\TruncateTable;
+use App\Traits\Database\Seeders\ForeignKeyChecks;
+use App\Traits\Database\Seeders\TruncateTable;
 use App\Models\User;
 
 class UserSeeder extends Seeder

@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Comment;
-use Database\Seeders\Traits\ForeignKeyChecks;
-use Database\Seeders\Traits\TruncateTable;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Traits\Database\Seeders\ForeignKeyChecks;
+use App\Traits\Database\Seeders\TruncateTable;
 use Illuminate\Database\Seeder;
 
 class CommentSeeder extends Seeder
