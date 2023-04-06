@@ -33,6 +33,11 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ]);
+
+        if (!$created) {
+            return new JsonResponse('Failed to create user');
+        }
+
         return new JsonResponse($created);
     }
 
@@ -44,6 +49,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        if (!$user) {
+            return new JsonResponse('User not found');
+        }
+
         return new JsonResponse($user);
     }
 

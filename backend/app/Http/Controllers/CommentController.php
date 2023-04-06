@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
@@ -15,7 +16,8 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Comment::query()->get();
+        return new JsonResponse($comments);
     }
 
     /**
@@ -26,7 +28,15 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        //
+        $created = Comment::query()->create([
+            'title' => $request->title,
+        ]);
+
+        if (!$created) {
+            return new JsonResponse('Failed to create comment');
+        }
+
+        return new JsonResponse($created);
     }
 
     /**
@@ -37,7 +47,11 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        //
+        if (!$comment) {
+            return new JsonResponse('Comment not found');
+        }
+
+        return new JsonResponse($comment);
     }
 
     /**
@@ -49,7 +63,15 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        //
+        $updated = $comment->update([
+            'body'  => $request->body ?? $comment->body,
+        ]);
+
+        if (!$updated) {
+            return new JsonResponse('Failed to update comment');
+        }
+
+        return new JsonResponse($comment);
     }
 
     /**
@@ -60,6 +82,12 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $deleted = $comment->forceDelete();
+
+        if (!$deleted) {
+            return new JsonResponse('Failed to delete comment');
+        }
+
+        return new JsonResponse('Deleted comment');
     }
 }
