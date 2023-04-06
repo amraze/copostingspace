@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use Exception;
 use Illuminate\Http\JsonResponse;
+use JsonException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -39,7 +39,7 @@ class UserController extends Controller
         ]);
 
         if (!$created) {
-            throw new Exception('Failed to create user');
+            throw new JsonException('Failed to create user');
         }
 
         return new JsonResponse($created);
@@ -54,7 +54,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         if (!$user) {
-            throw new Exception('User not found');
+            throw new JsonException('User not found');
         }
 
         return new JsonResponse($user);
@@ -76,7 +76,7 @@ class UserController extends Controller
         ]);
 
         if (!$updated) {
-            throw new Exception('Failed to update user');
+            throw new JsonException('Failed to update user');
         }
 
         return new JsonResponse($user);
@@ -93,7 +93,7 @@ class UserController extends Controller
         $deleted = $user->forceDelete();
 
         if (!$deleted) {
-            throw new Exception('Failed to delete user');
+            throw new JsonException('Failed to delete user');
         }
 
         return new JsonResponse('Deleted user');
