@@ -12,11 +12,11 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $comments = Comment::query()->get();
+        $comments = Comment::query()->paginate(20);
         return new JsonResponse($comments);
     }
 
@@ -24,7 +24,7 @@ class CommentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreCommentRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreCommentRequest $request)
     {
@@ -43,7 +43,7 @@ class CommentController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Comment $comment)
     {
@@ -59,7 +59,7 @@ class CommentController extends Controller
      *
      * @param  \App\Http\Requests\UpdateCommentRequest  $request
      * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
@@ -78,7 +78,7 @@ class CommentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Comment $comment)
     {
