@@ -16,7 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return new JsonResponse();
+        $users = User::query()->get();
+        return new JsonResponse($users);
     }
 
     /**
@@ -27,7 +28,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        $created = User::query()->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        return new JsonResponse($created);
     }
 
     /**
@@ -38,7 +44,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return new JsonResponse($user);
     }
 
     /**
@@ -50,7 +56,17 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $updated = $user->update([
+            'name' => $request->name ?? $user->name,
+            'email' => $request->email ?? $user->email,
+            'password' => $request->password ?? $user->password,
+        ]);
+
+        if (!$updated) {
+            return new JsonResponse('Failed to update user');
+        }
+
+        return new JsonResponse($user);
     }
 
     /**
@@ -61,6 +77,12 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $deleted = $user->forceDelete();
+
+        if (!$deleted) {
+            return new JsonResponse('Failed to delete user');
+        }
+
+        return new JsonResponse('Deleted user');
     }
 }
