@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
@@ -33,7 +34,7 @@ class CommentController extends Controller
         ]);
 
         if (!$created) {
-            return new JsonResponse('Failed to create comment');
+            throw new Exception('Failed to create comment');
         }
 
         return new JsonResponse($created);
@@ -48,7 +49,7 @@ class CommentController extends Controller
     public function show(Comment $comment)
     {
         if (!$comment) {
-            return new JsonResponse('Comment not found');
+            throw new Exception('Comment not found');
         }
 
         return new JsonResponse($comment);
@@ -68,7 +69,7 @@ class CommentController extends Controller
         ]);
 
         if (!$updated) {
-            return new JsonResponse('Failed to update comment');
+            throw new Exception('Failed to update comment');
         }
 
         return new JsonResponse($comment);
@@ -85,7 +86,7 @@ class CommentController extends Controller
         $deleted = $comment->forceDelete();
 
         if (!$deleted) {
-            return new JsonResponse('Failed to delete comment');
+            throw new Exception('Failed to delete comment');
         }
 
         return new JsonResponse('Deleted comment');

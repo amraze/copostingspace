@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -30,18 +31,21 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $created = DB::transaction(function () use ($request) {
+
             $created = Post::query()->create([
                 'title' => $request->title,
                 'body'  => $request->body,
             ]);
 
-            $created->users()->sync($request->user_ids);
+            if ($userIds = $request->user_ids) {
+                $created->users()->sync($userIds);
+            }
 
             return $created;
         });
 
         if (!$created) {
-            return new JsonResponse('Failed to create post');
+            throw new Exception('Failed to create post');
         }
 
         return new JsonResponse($created);
@@ -56,7 +60,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         if (!$post) {
-            return new JsonResponse('Post not found');
+            throw new Exception('Post not found');
         }
 
         return new JsonResponse($post);
@@ -71,13 +75,24 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $updated = $post->update([
-            'title' => $request->title ?? $post->title,
-            'body'  => $request->body ?? $post->body,
-        ]);
+
+        $updated = DB::transaction(function () use ($request, $post) {
+
+            $updated = $post->update([
+                'title' => $request->title ?? $post->title,
+                'body'  => $request->body ?? $post->body,
+            ]);
+
+            if ($userIds = $request->user_ids) {
+                $post->users()->sync($userIds);
+            }
+
+            return $updated;
+        });
+
 
         if (!$updated) {
-            return new JsonResponse('Failed to update post');
+            throw new Exception('Failed to update post');
         }
 
         return new JsonResponse($post);
@@ -94,7 +109,7 @@ class PostController extends Controller
         $deleted = $post->forceDelete();
 
         if (!$deleted) {
-            return new JsonResponse('Failed to delete post');
+            throw new Exception('Failed to delete post');
         }
 
         return new JsonResponse('Deleted post');
