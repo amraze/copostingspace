@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\User\UserCreated;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -41,6 +42,8 @@ class UserController extends Controller
         if (!$created) {
             throw new JsonException('Failed to create user');
         }
+
+        event(new UserCreated($created));
 
         return new JsonResponse($created);
     }
